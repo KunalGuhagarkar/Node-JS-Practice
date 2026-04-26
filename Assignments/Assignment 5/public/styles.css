@@ -1,0 +1,87 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar Container */
+nav {
+    background-color: #333;
+    padding: 0 20px;
+}
+
+/* List Styling */
+nav ul {
+    list-style-type: none;
+    display: flex; /* Makes the list horizontal */
+    justify-content: center; /* Centers the links */
+}
+
+/* Link Styling */
+nav ul li a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 15px 20px;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover Effect */
+nav ul li a:hover {
+    background-color: #555;
+    color: #ff9800; /* Subtle highlight color */
+}
+
+/* Optional: Mobile Responsive */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column; /* Stacks items vertically on small screens */
+        text-align: center;
+    }
+}
+
+
+/* Footer Container */
+footer {
+    background-color: #222;
+    color: #ffffff;
+    padding: 30px 20px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-top: 3px solid #ff9800; /* Added a small accent line */
+}
+
+/* Copyright Text */
+footer p {
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+/* Navigation Links */
+footer nav {
+    font-size: 0.9rem;
+}
+
+footer nav a {
+    color: #ff9800;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+}
+
+/* Hover Effect */
+footer nav a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Optional: Styling the separator pipe (|) */
+footer nav {
+    color: #555; /* Dims the "|" symbol */
+}
