@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Section</title>
+</head>
+
+<body>
+    <div>
+        About Me: <%- description %>
+    </div>
+
+    <!-- The client then inputs the following as their page's About Me: -->
+    <script>alert('Hacked!!!');</script>
+
+    <!-- When unescaped, this would be rendered into HTML as: -->
+    <div>
+        About Me:
+        <script>alert("Hacked!");</script>!
+    </div>
+
+    <!-- To prevent this cross-site scripting (XSS) attack, we can escape the output (you may also see this referred to as encoding). Escaped HTML replaces special characters, like <, with their respective HTML entities, in this case &lt;. In EJS, we can escape the output using <%= %>. -->
+
+    <div>
+        About Me: <%= username %>!
+    </div>
+
+    <!-- The escaped output is now rendered harmless:
+    About Me: &lt;script&gt;alert(&quot;Hacked!&quot;);&lt;/script&gt;! -->
+
+</body>
+
+</html>
