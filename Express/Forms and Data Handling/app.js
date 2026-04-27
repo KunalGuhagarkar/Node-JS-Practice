@@ -6,7 +6,7 @@ npm i express-validator
 */
 
 // To use express-validator
-const { body, validationResult } = require('express-validator');
+const { body, validationResult } = require("express-validator");
 
 /*
 Understanding body() function
@@ -15,15 +15,14 @@ The body() function allows you to specify which fields in the request body shoul
 */
 
 [
-    body("birthdate", "Must be a valid date.")
-        .optional({ values: "falsy" })
-        .isISO8601() // Enforce a YYYY-MM-DD format.
+  body("birthdate", "Must be a valid date.")
+    .optional({ values: "falsy" })
+    .isISO8601(), // Enforce a YYYY-MM-DD format.
 ];
 
 /*
 This example marks birthdate field as optional, but still enforces the ISO8601 date format on inputs. This is because { values: "falsy" } means values that aren’t undefined, null, false, 0 or empty strings "" will still be validated.
 */
-
 
 /*
 Chaining Validations
@@ -32,12 +31,12 @@ You can also chain multiple validation methods, with unique error messages if th
 */
 
 [
-    body("name")
-        .trim()
-        .notEmpty()
-        .withMessage("Name cannot be Empty.")
-        .isAlpha()
-        .withMessage("Name must only contain alphabet letters")
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Name cannot be Empty.")
+    .isAlpha()
+    .withMessage("Name must only contain alphabet letters"),
 ];
 
 // This ensures that name is not only present and trimmed, but also only contains alphabet letters.
@@ -56,16 +55,16 @@ Validation results
 Once the validation rules are applied, you can use validationResult to handle any validation errors
 */
 const controller = (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).render("index", {
-            errors: errors.array()
-        });
-    }
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render("index", {
+      errors: errors.array(),
+    });
+  }
 
-    // do stuff if successfull
-    res.redirect("/success");
-}
+  // do stuff if successfull
+  res.redirect("/success");
+};
 
 /*
 Forms and Express routes
@@ -76,10 +75,8 @@ One final thing to cover is how to handle routes in Express. After all, our form
 exports.userUpdateGet = (req, res, next) => {};
 exports.userUpdatePost = (req, res, next) => {};
 
-
-const express = require('express');
+const express = require("express");
 const app = express();
-
 
 // Inside our router, we can then assign routes which correspond to the controller’s functions:
 const { Router } = require("express");
@@ -95,10 +92,10 @@ module.exports = usersRouter;
 // In our form, the action would look something like this:
 
 // <!-- Example using EJS with POST to submit an update to our Express server. -->
-<form action="/users/<%= user.userId %>/update" method="POST"></form>
+<form action="/users/<%= user.userId %>/update" method="POST"></form>;
 
 // /users/:id/update is an endpoint we’ve created on our Express server.
 
 app.listen(3000, () => {
-    console.log("App running on Port 3000");
+  console.log("App running on Port 3000");
 });
