@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+</head>
+<body>
+
+<h1>Search Results</h1>
+
+<p>Results for: "<%= query %>"</p>
+
+<ul>
+  <% if (results.length === 0) { %>
+    <p>No users found</p>
+  <% } else { %>
+    <% results.forEach(user => { %>
+      <li>
+        <strong><%= user.firstName %> <%= user.lastName %></strong><br>
+        Email: <%= user.email %><br>
+        Age: <%= user.age %><br>
+        Bio: <%= user.bio %>
+      </li>
+    <% }) %>
+  <% } %>
+</ul>
+
+<a href="/">Back to home</a>
+
+</body>
+</html>
