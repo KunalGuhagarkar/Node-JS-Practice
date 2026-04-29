@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Index Page</title>
+</head>
+<body>
+
+  <h1>User List</h1>
+
+  <% if (name) { %>
+    <ul>
+      <li><%= name %></li>
+    </ul>
+  <% } %>
+
+  <% if (errors && errors.length) { %>
+    <ul style="color: red;">
+      <% errors.forEach(err => { %>
+        <li><%= err.msg %></li>
+      <% }) %>
+    </ul>
+  <% } %>  
+
+  <form action="/" method="post">
+    <input type="text" name="name" placeholder="Enter Name">
+    <button type="submit">Submit</button>
+  </form>
+
+</body>
+</html>
