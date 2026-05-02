@@ -1,9 +1,18 @@
+-- Start SQLite
+sqlite3.exe practice.db
+
 -- Execute this in the Terminal
 .mode csv
 .import data.csv data
-.quitsq
+.quit
 
 .schema -- Output: CREATE TABLE "data"("id" ANY, "language" ANY);
+
+-- CRUD
+-- C -> CREATE
+-- R (READ) -> SELECT
+-- U -> UPDATE
+-- D -> DELETE/DROP
 
 -- SELECT SYNTAX
 SELECT columns FROM table;
@@ -155,3 +164,105 @@ SELECT COUNT(*) FROM favorites WHERE language = 'C' AND problem LIKE 'Hello, %';
 -- │        5 │
 -- ╰──────────╯
 
+-- QUERY
+SELECT language, COUNT(*) FROM favorites GROUP BY language;
+-- Output
+-- ╭──────────┬──────────╮
+-- │ language │ COUNT(*) │
+-- ╞══════════╪══════════╡
+-- │ C        │       58 │
+-- │ Python   │      190 │
+-- │ Scratch  │       24 │
+-- ╰──────────┴──────────╯
+
+-- QUERY
+SELECT language, COUNT(*) FROM favorites GROUP BY language ORDER BY COUNT(*) DESC;
+-- Output:
+-- ╭──────────┬──────────╮
+-- │ language │ COUNT(*) │
+-- ╞══════════╪══════════╡
+-- │ Python   │      190 │
+-- │ C        │       58 │
+-- │ Scratch  │       24 │
+-- ╰──────────┴──────────╯
+
+-- QUERY
+SELECT language, COUNT(*) AS n FROM favorites GROUP BY language ORDER BY n DESC; 
+--Output:
+-- ╭──────────┬─────╮
+-- │ language │  n  │
+-- ╞══════════╪═════╡
+-- │ Python   │ 190 │
+-- │ C        │  58 │
+-- │ Scratch  │  24 │
+-- ╰──────────┴─────╯
+
+-- QUERY
+SELECT language, COUNT(*) AS n FROM favorites GROUP BY language ORDER BY n DESC LIMIT 1; 
+--Output:
+-- ╭──────────┬─────╮
+-- │ language │  n  │
+-- ╞══════════╪═════╡
+-- │ Python   │ 190 │
+-- ╰──────────┴─────╯
+
+
+-- INSERT SYNTAX
+INSERT INTO table (column, ...) VALUES(value, ...);
+
+-- QUERY
+INSERT INTO favorites (language, problem) VALUES('SQL', 'Fiftyville');
+SELECT * FROM favorites;
+-- Output:
+-- │10/20/2025 13:38:57│C       │Filter               │
+-- │NULL               │SQL     │Fiftyville           │
+-- ╰───────────────────┴────────┴─────────────────────╯
+
+
+-- DELETE SYNTAX
+DELETE FROM table WHERE condition;
+
+-- QUERY
+DELETE FROM favorites WHERE Timestamp IS NULL;
+-- Output:
+-- │10/20/2025 13:38:54│Python  │DNA                  │
+-- │10/20/2025 13:38:57│C       │Filter               │
+-- ╰───────────────────┴────────┴─────────────────────╯
+
+
+-- UPDATE SYNTAX
+UPDATE table SET column = value WHERE condition;
+
+-- QUERY
+-- (What not to do!!!)
+UPDATE favorites SET language = 'SQL', problem = 'Fiftyville';
+SELECT * FROM favorites;
+-- Output:
+-- ╭─────────────────────┬──────────┬────────────╮
+-- │      Timestamp      │ language │  problem   │
+-- ╞═════════════════════╪══════════╪════════════╡
+-- │ 10/20/2025 9:45:26  │ SQL      │ Fiftyville │
+-- │ 10/20/2025 13:38:37 │ SQL      │ Fiftyville │
+-- │ 10/20/2025 13:38:38 │ SQL      │ Fiftyville │
+-- │ 10/20/2025 13:38:38 │ SQL      │ Fiftyville │
+-- │ 10/20/2025 13:38:39 │ SQL      │ Fiftyville │
+-- │ 10/20/2025 13:38:42 │ SQL      │ Fiftyville │
+-- │ 10/20/2025 13:38:44 │ SQL      │ Fiftyville │
+-- │ 10/20/2025 13:38:46 │ SQL      │ Fiftyville │
+-- │ 10/20/2025 13:38:49 │ SQL      │ Fiftyville │
+-- │ 10/20/2025 13:38:50 │ SQL      │ Fiftyville │
+-- │ 10/20/2025 13:38:52 │ SQL      │ Fiftyville │
+-- │ 10/20/2025 13:38:54 │ SQL      │ Fiftyville │
+-- │ 10/20/2025 13:38:57 │ SQL      │ Fiftyville │
+-- ╰─────────────────────┴──────────┴────────────╯
+
+-- QUERY
+DELETE FROM favorites;
+SELECT * FROM favorites;
+-- Output:
+-- (Nothing shows up)
+
+-- You have to again import it from start.
+
+-- DROP SYNTAX
+DROP TABLE table;
