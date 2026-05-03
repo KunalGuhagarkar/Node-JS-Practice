@@ -341,8 +341,17 @@ WHERE id = 63881;
 -- ╰───────────┴───────────╯
 
 -- Query:
-
+SELECT title FROM shows
+JOIN genres ON shows.id = genres.show_id
+WHERE id = 63881;
 --Output:
+-- +-----------+
+-- |   title   |
+-- +-----------+
+-- | Catweazle |
+-- | Catweazle |
+-- | Catweazle |
+-- +-----------+
 
 -- Query:
 
