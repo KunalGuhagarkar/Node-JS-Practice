@@ -353,14 +353,322 @@ WHERE id = 63881;
 -- | Catweazle |
 -- +-----------+
 
--- Query:
-
---Output:
-
--- Query:
-
---Output:
+/*
+  3. Many-to-Many
+    When multiple records in one table are associated with multiple records in another.
+*/
 
 -- Query:
-
+SELECT * FROM shows WHERE title = 'The Office';
 --Output:
+-- +----------+------------+------+----------+
+-- |    id    |   title    | year | episodes |
+-- +----------+------------+------+----------+
+-- | 112108   | The Office | 1995 | 6        |
+-- | 290978   | The Office | 2001 | 14       |
+-- | 386676   | The Office | 2005 | 188      |
+-- | 1791001  | The Office | 2010 | 30       |
+-- | 2186395  | The Office | 2012 | 8        |
+-- | 8305218  | The Office | 2019 | 28       |
+-- | 10193026 | The Office | 2024 | 8        |
+-- | 20877972 | The Office | 2022 | 20       |
+-- +----------+------------+------+----------+
+
+-- Query:
+SELECT * FROM shows WHERE title = 'The Office' AND year = 2005;
+--Output:
+-- +--------+------------+------+----------+
+-- |   id   |   title    | year | episodes |
+-- +--------+------------+------+----------+
+-- | 386676 | The Office | 2005 | 188      |
+-- +--------+------------+------+----------+
+
+-- Query:
+SELECT id FROM shows WHERE title = 'The Office' AND year = 2005;
+--Output:
+-- +--------+
+-- |   id   |
+-- +--------+
+-- | 386676 |
+-- +--------+
+
+
+-- Query:
+SELECT person_id FROM stars WHERE show_id = 386676;
+-- Output:
+-- +-----------+
+-- | person_id |
+-- +-----------+
+-- | 136797    |
+-- | 278979    |
+-- | 1024677   |
+-- | 933988    |
+-- | 1534715   |
+-- | 1580911   |
+-- | 1526554   |
+-- | 1526554   |
+-- | 1526554   |
+-- | 281212    |
+-- | 809613    |
+-- | 809613    |
+-- | 105588    |
+-- +-----------+
+
+-- Query:
+SELECT person_id FROM stars WHERE show_id = (
+  SELECT id FROM shows WHERE title = "The Office" AND year = 2005
+);
+-- Output:
+-- +-----------+
+-- | person_id |
+-- +-----------+
+-- | 136797    |
+-- | 278979    |
+-- | 1024677   |
+-- | 933988    |
+-- | 1534715   |
+-- | 1580911   |
+-- | 1526554   |
+-- | 1526554   |
+-- | 1526554   |
+-- | 281212    |
+-- | 809613    |
+-- | 809613    |
+-- | 105588    |
+-- +-----------+
+
+-- Query:
+SELECT name FROM people WHERE id IN (
+  SELECT person_id FROM stars WHERE show_id = (
+    SELECT id FROM shows WHERE title = 'The Office' AND year = 2005
+  ) 
+);
+-- Output:
+-- +--------------------+
+-- |        name        |
+-- +--------------------+
+-- | Creed Bratton      |
+-- | Steve Carell       |
+-- | Jenna Fischer      |
+-- | Kate Flannery      |
+-- | Phyllis Smith      |
+-- | Rainn Wilson       |
+-- | John Krasinski     |
+-- | Angela Kinsey      |
+-- | Leslie David Baker |
+-- | Brian Baumgartner  |
+-- +--------------------+
+
+-- Query:
+SELECT * FROM people WHERE name = 'Steve Carell';
+-- Output:
+-- +--------+--------------+-------+
+-- |   id   |     name     | birth |
+-- +--------+--------------+-------+
+-- | 136797 | Steve Carell | 1962  |
+-- +--------+--------------+-------+
+
+-- Query:
+SELECT id FROM people WHERE name = 'Steve Carell';
+-- Output:
+-- +--------+
+-- |   id   |
+-- +--------+
+-- | 136797 |
+-- +--------+
+
+-- Query:
+SELECT show_id FROM stars WHERE person_id = (
+  SELECT id FROM people WHERE name = 'Steve Carell'
+);
+-- Output:
+-- +----------+
+-- | show_id  |
+-- +----------+
+-- | 115148   |
+-- | 115148   |
+-- | 118420   |
+-- | 306410   |
+-- | 381741   |
+-- | 386676   |
+-- | 428108   |
+-- | 804423   |
+-- | 12054924 |
+-- | 12054924 |
+-- | 12054924 |
+-- | 1489335  |
+-- | 1618221  |
+-- | 2012383  |
+-- | 2051662  |
+-- | 2294818  |
+-- | 2567084  |
+-- | 30826447 |
+-- | 31037437 |
+-- | 3565412  |
+-- | 3590460  |
+-- | 4944600  |
+-- | 5533446  |
+-- | 5706648  |
+-- | 9612516  |
+-- +----------+
+
+-- Query:
+SELECT title FROM shows WHERE id IN (
+  SELECT show_id FROM stars WHERE person_id = (
+    SELECT id FROM people WHERE name = 'Steve Carell'
+  )
+);
+-- Output:
+-- +------------------------------------+
+-- |               title                |
+-- +------------------------------------+
+-- | The Dana Carvey Show               |
+-- | Over the Top                       |
+-- | Watching Ellie                     |
+-- | Come to Papa                       |
+-- | The Office                         |
+-- | Entertainers with Byron Allen      |
+-- | The Naked Trucker and T-Bones Show |
+-- | ES.TV HD                           |
+-- | Mark at the Movies                 |
+-- | Inside Comedy                      |
+-- | Rove LA                            |
+-- | Metacafe Unfiltered                |
+-- | Fabrice Fabrice Interviews         |
+-- | Riot                               |
+-- | Séries express                     |
+-- | Hollywood Sessions                 |
+-- | IMDb First Credit                  |
+-- | First Impressions with Dana Carvey |
+-- | Space Force                        |
+-- | Some Good News                     |
+-- | The Four Seasons                   |
+-- | The Envelope: Oscar Roundtables    |
+-- +------------------------------------+
+
+-- Query:
+SELECT title FROM shows
+JOIN stars ON shows.id = stars.show_id
+JOIN people ON stars.person_id = people.id
+WHERE name = 'Steve Carell';
+-- Output:
+-- +------------------------------------+
+-- |               title                |
+-- +------------------------------------+
+-- | The Dana Carvey Show               |
+-- | The Dana Carvey Show               |
+-- | Over the Top                       |
+-- | Watching Ellie                     |
+-- | Come to Papa                       |
+-- | The Office                         |
+-- | Entertainers with Byron Allen      |
+-- | The Naked Trucker and T-Bones Show |
+-- | Some Good News                     |
+-- | Some Good News                     |
+-- | Some Good News                     |
+-- | ES.TV HD                           |
+-- | Mark at the Movies                 |
+-- | Inside Comedy                      |
+-- | Rove LA                            |
+-- | Metacafe Unfiltered                |
+-- | Fabrice Fabrice Interviews         |
+-- | The Four Seasons                   |
+-- | The Envelope: Oscar Roundtables    |
+-- | Riot                               |
+-- | Séries express                     |
+-- | Hollywood Sessions                 |
+-- | IMDb First Credit                  |
+-- | First Impressions with Dana Carvey |
+-- | Space Force                        |
+-- +------------------------------------+
+
+-- Query:
+SELECT title FROM shows, stars, people
+WHERE shows.id = stars.show_id
+AND stars.person_id = people.id
+AND name = 'Steve Carell';
+-- Output:
+-- +------------------------------------+
+-- |               title                |
+-- +------------------------------------+
+-- | The Dana Carvey Show               |
+-- | The Dana Carvey Show               |
+-- | Over the Top                       |
+-- | Watching Ellie                     |
+-- | Come to Papa                       |
+-- | The Office                         |
+-- | Entertainers with Byron Allen      |
+-- | The Naked Trucker and T-Bones Show |
+-- | Some Good News                     |
+-- | Some Good News                     |
+-- | Some Good News                     |
+-- | ES.TV HD                           |
+-- | Mark at the Movies                 |
+-- | Inside Comedy                      |
+-- | Rove LA                            |
+-- | Metacafe Unfiltered                |
+-- | Fabrice Fabrice Interviews         |
+-- | The Four Seasons                   |
+-- | The Envelope: Oscar Roundtables    |
+-- | Riot                               |
+-- | Séries express                     |
+-- | Hollywood Sessions                 |
+-- | IMDb First Credit                  |
+-- | First Impressions with Dana Carvey |
+-- | Space Force                        |
+-- +------------------------------------+
+
+
+-- INDEXES
+
+-- Command:
+.timer ON
+
+-- Query:
+SELECT * FROM shows WHERE title = 'The Office';
+-- Output:
+-- +----------+------------+------+----------+
+-- |    id    |   title    | year | episodes |
+-- +----------+------------+------+----------+
+-- | 112108   | The Office | 1995 | 6        |
+-- | 290978   | The Office | 2001 | 14       |
+-- | 386676   | The Office | 2005 | 188      |
+-- | 1791001  | The Office | 2010 | 30       |
+-- | 2186395  | The Office | 2012 | 8        |
+-- | 8305218  | The Office | 2019 | 28       |
+-- | 10193026 | The Office | 2024 | 8        |
+-- | 20877972 | The Office | 2022 | 20       |
+-- +----------+------------+------+----------+
+-- Run Time: real 0.029 user 0.020093 sys 0.004830
+
+-- INDEX SYNTAX:
+CREATE INDEX name ON table (column, ...);
+
+-- Query:
+CREATE INDEX title_index ON shows (title);
+-- Output:
+-- Run Time: real 0.127 user 0.097510 sys 0.015510
+
+-- Query:
+SELECT * FROM shows WHERE title = 'The Office';
+-- Output:
+-- +----------+------------+------+----------+
+-- |    id    |   title    | year | episodes |
+-- +----------+------------+------+----------+
+-- | 112108   | The Office | 1995 | 6        |
+-- | 290978   | The Office | 2001 | 14       |
+-- | 386676   | The Office | 2005 | 188      |
+-- | 1791001  | The Office | 2010 | 30       |
+-- | 2186395  | The Office | 2012 | 8        |
+-- | 8305218  | The Office | 2019 | 28       |
+-- | 10193026 | The Office | 2024 | 8        |
+-- | 20877972 | The Office | 2022 | 20       |
+-- +----------+------------+------+----------+
+-- Run Time: real 0.002 user 0.000215 sys 0.000486
+
+/*
+  How does INDEX Work?
+
+  Index is explained as a supplementary data structure, typically a B-Tree, that the database maintains to significantly accelerate data retrieval by providing a shortcut to specific rows. Without an index, the database must perform a linear "full table scan" ($O(n)$), checking every record one by one, which becomes increasingly slow as the dataset grows into the millions; however, by creating an index on frequently searched columns like title or name, the database can navigate a sorted hierarchy to find data in logarithmic time ($O(\log n)$), reducing millions of operations to just a few dozen. While this transition from "scanning" to "searching" makes read operations nearly instantaneous, it involves a trade-off where the database requires additional disk space for storage and experiences slightly slower write speeds, as the index must be updated every time data is inserted or deleted.
+*/
+
