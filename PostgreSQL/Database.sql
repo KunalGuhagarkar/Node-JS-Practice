@@ -98,3 +98,23 @@ SELECT * FROM usernames;
     3 | Lofty
   (3 rows)
 */
+
+-- Adding populatedb.js
+DROP TABLE usernames;
+
+-- Go To -> db/populatedb.js
+
+/*
+  We’ve hardcoded our local db connection information in the script. Hence, the script only populates our local db. We need a way to populate our production db as well. One way to do this is by using environment variables, though this leads to unnecessary hassle. Why? Because now, the script can only populate the production db on the production server i.e. we’ll need to access the production server’s cli to run the script. Or, we could sneakily edit our environment file to point to the production db and run the script on our machine, and revert it.
+
+  We should aim to make our script as independent from our codebase as possible.
+
+  A far more painless approach is providing the connection information as an argument to the script. This way, we can run the script for local db as well as production db on our machine. You can access arguments via process.argv.
+*/
+
+-- populating local db 
+node db/populatedb.js <local-db-url>
+
+-- populating production db
+-- run it from your machine once after deployment of your app & db
+node db/populatedb.js <production-db-url>
