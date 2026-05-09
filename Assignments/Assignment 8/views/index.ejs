@@ -6,12 +6,16 @@
     <title>Home Page</title>
   </head>
   <body>
-    <h1><%= locals.users %></h1>
-    <h1>Login</h1>
-    <form action="/login" method="post">
-      Enter Username: <input type="text" name="username" /> Enter Password:
-      <input type="password" name="password" />
-      <input type="submit" value="Login" />
-    </form>
+    <% if(locals.user) { %>
+      <h1>Welcome Back: <%= user.username %></h1>
+      <a href="/logout">Logout</a>
+    <% } else { %>
+      <h1>Login</h1>
+      <form action="/login" method="post">
+        Enter Username: <input type="text" name="username" /> Enter Password:
+        <input type="password" name="password" />
+        <input type="submit" value="Login" />
+      </form>
+    <% } %>
   </body>
 </html>
