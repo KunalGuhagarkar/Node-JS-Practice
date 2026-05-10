@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON</title>
+  </head>
+  <body>
+    <form action="/info" method="post">
+      <button type="submit" value="name" name="choice">Show Name</button>
+      <button type="submit" value="age" name="choice">Show Age</button>
+      <button type="submit" value="education" name="choice">Show Degree</button>
+    </form>
+
+    <% if(Array.isArray(obj)) { %>
+
+      <% obj.forEach((edu) => { %>
+        <p><%= edu.degree %></p>
+        <p><%= edu.university %></p>
+      <% }) %>
+
+    <% } else { %>
+
+      <p><%= obj %></p>
+
+    <% } %>
+  </body>
+</html>
